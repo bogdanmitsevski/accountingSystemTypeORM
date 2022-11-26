@@ -2,7 +2,7 @@ import express from 'express';
 import ItemController from '../controllers/itemController';
 const router = express.Router();
 
-router.post('/', ItemController.createItem);
-router.get('/', ItemController.getItem);
+router.post('/createItem', ItemController.createItem);
+router.get('/items', ItemController.getItem);
 
 module.exports =  router;

@@ -2,27 +2,27 @@ import moment from 'moment';
 import express from 'express';
 import { Shift } from '../entities/Shift';
 import { IsNull } from 'typeorm';
+import { Sell } from '../entities/Sell';
 class ShiftController {
-    public newShift:any;
     async startShift(req:express.Request, res:express.Response) {
     try {
         let finishedAt;
         const checkIfShiftIsOpen = await Shift.findOne({
-            where: {finishedAt}
+            where: {'finishedAt':IsNull()}
         })
         if(checkIfShiftIsOpen) {
             res.json({message:'Please, close last Shift'});
         }
 
-        else if(!checkIfShiftIsOpen){
+        else {
 
         const timeNow = moment();
-        this.newShift = await Shift.create({
+        const newShift = await Shift.create({
             startedAt: timeNow
         });
 
-        await this.newShift.save();
-        const id = this.newShift.id;
+        await newShift.save();
+        const id = newShift.id;
         res.json({message:`New Shift with ${id} was created`});
     };
 }
@@ -36,20 +36,13 @@ class ShiftController {
         let finishedAt = moment();
     try {
         const openShift:any = await Shift.findOne({
-            where:{id:this.newShift.id},
-            order:{'created_at':'DESC'}
+            where:{'finishedAt':IsNull()}
         });
 
         openShift.finishedAt = finishedAt;
-        // const openShift:any = await Shift.findBy({
-        //     finishedAt: IsNull()
-        // });
-        // openShift.finishedAt = moment();
-        // await openShift.save({where:{id:openShift.id}});
-        // res.json(openShift);
 
         await openShift.save({where:{id:openShift.id}});
-        res.json(openShift);
+        res.json({message:`Shift with ID: ${openShift.id} was successfully closed`});
     }
     catch(e) {
         console.log(e);
@@ -58,7 +51,15 @@ class ShiftController {
 
     async getLastShift(req:express.Request, res:express.Response) {
         try {
-            res.json({message:"Hello, lastShift"});
+            const LastShift = await Shift.findOne({
+                where:{},
+                order:{'created_at': 'DESC'}
+            });
+            const AllSells = await Sell.find({
+                where: {shiftId: LastShift?.id}
+            });
+
+            res.json(AllSells);
         }
         catch(e) {
             console.log(e);
