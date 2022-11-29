@@ -3,13 +3,12 @@ import express from 'express';
 import { Shift } from '../entities/Shift';
 import { IsNull } from 'typeorm';
 import { Sell } from '../entities/Sell';
+import { checkOpenShift } from '../utils/shiftControllerFunctions';
+import { getLastShift } from '../utils/shiftControllerFunctions';
 class ShiftController {
     async startShift(req:express.Request, res:express.Response) {
     try {
-        let finishedAt;
-        const checkIfShiftIsOpen = await Shift.findOne({
-            where: {'finishedAt':IsNull()}
-        })
+        const checkIfShiftIsOpen = await checkOpenShift();
         if(checkIfShiftIsOpen) {
             res.json({message:'Please, close last Shift'});
         }
@@ -35,9 +34,7 @@ class ShiftController {
     async finishShift(req:express.Request, res:express.Response) {
         let finishedAt = moment();
     try {
-        const openShift:any = await Shift.findOne({
-            where:{'finishedAt':IsNull()}
-        });
+        const openShift:any = await checkOpenShift();
 
         openShift.finishedAt = finishedAt;
 
@@ -51,10 +48,7 @@ class ShiftController {
 
     async getLastShift(req:express.Request, res:express.Response) {
         try {
-            const LastShift = await Shift.findOne({
-                where:{},
-                order:{'created_at': 'DESC'}
-            });
+            const LastShift = await getLastShift();
             const AllSells = await Sell.find({
                 where: {shiftId: LastShift?.id}
             });

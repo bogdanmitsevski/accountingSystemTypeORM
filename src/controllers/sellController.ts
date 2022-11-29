@@ -3,30 +3,24 @@ import { Sell } from '../entities/Sell';
 import { Shift } from '../entities/Shift';
 import { IsNull } from 'typeorm';
 import { Item } from '../entities/Item';
+import {getLastShiftId} from '../utils/sellControllerFunctions';
+import {getLastItemId} from '../utils/sellControllerFunctions';
+import {ItemAviability} from '../utils/sellControllerFunctions';
+import {ShiftAviability} from '../utils/sellControllerFunctions';
 
 
 class SellController {
     async createSell (req:express.Request, res:express.Response) {
     try {
     const {ItemId, Price} = req.body;
-    const getLastShiftId = await Shift.findOne({
-        where: {},
-        order: {'id': 'DESC'}
-    });
+    const resultGetLastShiftId:any = await getLastShiftId();
     const ActiveItemId = await Item.findOne({
         where: {id:ItemId}
     });
-    const LastItemId = await Item.findOne({
-        where: {},
-        order: {'created_at': 'DESC'}
-    });
-    const LastShiftId = getLastShiftId?.id;
-    const  checkifItemIsAvaliable = await Item.findOne({
-        where:{}
-    });
-    const checkIfShiftIsAvalieable = await Shift.findOne({
-        where: {'finishedAt': IsNull()}
-    });
+    const LastItemId = await getLastItemId();
+    const LastShiftId = resultGetLastShiftId?.id;
+    const  checkifItemIsAvaliable = await ItemAviability();
+    const checkIfShiftIsAvalieable = await ShiftAviability();
 
     if(!checkIfShiftIsAvalieable) {
         res.json({message: 'Please, Start New Shift at first'});
@@ -87,7 +81,6 @@ class SellController {
 
         
 }
-    console.log(LastItemId?.price);
     }
 catch(e) {
     console.log(e);
