@@ -5,4 +5,4 @@ const router = express.Router();
 router.post('/createItem', ItemController.createItem);
 router.get('/items', ItemController.getItem);
 
-module.exports =  router;
+module.exports = router;

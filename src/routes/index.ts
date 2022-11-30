@@ -1,16 +1,16 @@
 import express from 'express';
 const router = express.Router();
 
-//shifts
+// shifts
 router.use('/', require('../routes/shifts'));
 
-//items
+// items
 router.use('/', require('../routes/items'));
 
-//sells
+// sells
 router.use('/', require('../routes/sells'));
 
-//users
+// users
 router.use('/', require('../routes/users'));
 
 export default router;

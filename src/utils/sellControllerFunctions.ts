@@ -3,34 +3,34 @@ import { IsNull } from 'typeorm';
 import { Item } from '../entities/Item';
 
 function getLastShiftId() {
-    return Shift.findOne({
+  return Shift.findOne({
     where: {},
-    order: {'id': 'DESC'}
-});
-};
+    order: { id: 'DESC' }
+  });
+}
 
 function getLastItemId() {
-    return Item.findOne({
-        where: {},
-        order: {'created_at': 'DESC'}
-    });
-};
+  return Item.findOne({
+    where: {},
+    order: { created_at: 'DESC' }
+  });
+}
 
-function ItemAviability () {
-    return Item.findOne({
-        where:{}
-    });
-};
+function ItemAviability() {
+  return Item.findOne({
+    where: {}
+  });
+}
 
-function ShiftAviability () {
-    return Shift.findOne({
-        where: {'finishedAt': IsNull()}
-    });
+function ShiftAviability() {
+  return Shift.findOne({
+    where: { finishedAt: IsNull() }
+  });
 }
 
 export {
-    getLastShiftId,
-    getLastItemId,
-    ItemAviability,
-    ShiftAviability
-}
+  getLastShiftId,
+  getLastItemId,
+  ItemAviability,
+  ShiftAviability
+};

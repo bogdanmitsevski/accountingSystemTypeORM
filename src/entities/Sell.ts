@@ -1,26 +1,25 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import {
+  Entity, BaseEntity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn
+} from 'typeorm';
 
 @Entity()
 
 export class Sell extends BaseEntity {
-
     @PrimaryGeneratedColumn()
-    id:number;
+      id:number;
 
     @Column()
-    shiftId:number;
+      shiftId:number;
 
     @Column()
-    itemId:number;
+      itemId:number;
 
     @Column()
-    price:number;
+      price:number;
 
     @CreateDateColumn()
-    created_at: Date;
+      created_at: Date;
 
     @UpdateDateColumn()
-    updated_at: Date;
+      updated_at: Date;
 }
-
-

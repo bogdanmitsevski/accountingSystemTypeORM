@@ -1,23 +1,24 @@
-import {Entity, BaseEntity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn} from 'typeorm';
+import {
+  Entity, BaseEntity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn
+} from 'typeorm';
 
 @Entity()
 
 export class Shift extends BaseEntity {
-
     @PrimaryGeneratedColumn()
-    id:number;
+      id:number;
 
     @Column()
-    startedAt:Date;
+      startedAt:Date;
 
     @Column({
-        nullable:true
+      nullable: true
     })
-    finishedAt:Date;
+      finishedAt:Date;
 
     @CreateDateColumn()
-    created_at: Date;
+      created_at: Date;
 
     @UpdateDateColumn()
-    updated_at: Date;
+      updated_at: Date;
 }

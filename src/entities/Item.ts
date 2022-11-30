@@ -1,21 +1,22 @@
-import { BaseEntity, Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import {
+  BaseEntity, Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn
+} from 'typeorm';
 
 @Entity()
 
 export class Item extends BaseEntity {
-
     @PrimaryGeneratedColumn()
-    id:number;
+      id:number;
 
     @Column()
-    name:string;
+      name:string;
 
     @Column()
-    price:number;
+      price:number;
 
     @CreateDateColumn()
-    created_at: Date;
+      created_at: Date;
 
     @UpdateDateColumn()
-    updated_at: Date;
+      updated_at: Date;
 }
